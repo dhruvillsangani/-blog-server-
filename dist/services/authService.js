@@ -106,7 +106,7 @@ let login = (req, res, email, username, password) => __awaiter(void 0, void 0, v
         const token = jsonwebtoken_1.default.sign({
             email: userObj.email,
             userId: userObj.id.toString(),
-        }, authEnum_1.auth.JWT_SECRET_MSG, { expiresIn: "1h" });
+        }, authEnum_1.auth.JWT_SECRET_MSG, { expiresIn: authEnum_1.auth.EXPIRATION_TIME });
         res.status(authEnum_1.status.success).json({
             token: token,
             userId: userObj.id,

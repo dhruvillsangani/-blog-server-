@@ -11,6 +11,7 @@ const sequelize = new Sequelize(
   process.env.DATABASE_PASS,
   {
     host: process.env.HOST,
+    // @ts-ignore
     dialect: process.env.DIALECT,
     operatorsAliases: newLocal,
   }

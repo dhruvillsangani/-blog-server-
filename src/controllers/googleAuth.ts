@@ -19,10 +19,9 @@ passport.use(
       done: any
     ) {
       // Here we are storing login info in database
-
-      logger.info(accessToken);
-      logger.info(refreshToken);
-      logger.info(profile);
+      // logger.info(accessToken);
+      // logger.info(refreshToken);
+      // logger.info(profile);
       return done(null, profile);
     }
   )

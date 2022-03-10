@@ -18,12 +18,12 @@ const authEnum_1 = require("../ENUM/authEnum");
 require("../controllers/googleAuth");
 const logger_config_1 = require("../config/logger_config");
 const router = express_1.default.Router();
-router.get(authEnum_1.Routes.GOOGLE, passport_1.default.authenticate(authEnum_1.google.GOOGLE, {
-    scope: ["profile"],
-    accessType: "offline",
-    prompt: "consent",
+router.get(authEnum_1.Routes.GOOGLE, passport_1.default.authenticate(authEnum_1.googleAuth.GOOGLE, {
+    scope: [authEnum_1.googleAuth.SCOPE],
+    accessType: authEnum_1.googleAuth.ACCESS_TYPE,
+    prompt: authEnum_1.googleAuth.CONSENT,
 }));
-router.get(authEnum_1.Routes.GOOGLE_CALLBACK, passport_1.default.authenticate(authEnum_1.google.GOOGLE, {
+router.get(authEnum_1.Routes.GOOGLE_CALLBACK, passport_1.default.authenticate(authEnum_1.googleAuth.GOOGLE, {
     failureRedirect: authEnum_1.Routes.LOGIN,
 }), (req, res) => {
     res.redirect(authEnum_1.Routes.SUCESS);

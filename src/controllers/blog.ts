@@ -1,14 +1,15 @@
 import Blog from "../models/mongodb/blog";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { blog } from "../ENUM/authEnum";
 import multer from "multer";
+import { logger } from "../config/logger_config";
 
 const blogController = {
-  getBlog: async (req: Request, res: Response, next: any) => {
+  getBlog: async (req: Request, res: Response, next: NextFunction) => {
     let blog = await Blog.find();
     res.json(blog);
   },
-  postBlog: (req: Request, res: Response, next: any) => {
+  postBlog: (req: Request, res: Response, next: NextFunction) => {
     console.log(req.file);
     const blog = new Blog({
       title: req.body.title,
@@ -29,7 +30,7 @@ const blogController = {
   getBlogById: async (
     req: { params: { blogId: any } },
     res: Response,
-    next: any
+    next: NextFunction
   ) => {
     let blogId = req.params.blogId;
     try {
@@ -41,7 +42,7 @@ const blogController = {
       }
     }
   },
-  editBlog: (req: Request, res: Response, next: any) => {
+  editBlog: (req: Request, res: Response, next: NextFunction) => {
     let blogId = req.params.blogId;
     console.log(blogId);
     const title = req.body.title;
@@ -51,9 +52,9 @@ const blogController = {
 
     Blog.findById(blogId)
       .then((result: any) => {
-        console.log(result);
+        logger.info(result);
         if (!result) {
-          console.log("not found");
+          logger.info("Not found");
         }
 
         result.title = title;

@@ -20,9 +20,9 @@ const storage = multer_1.default.diskStorage({
 });
 exports.storage = storage;
 const fileFilter = (req, file, cb) => {
-    if (file.mimetype == "image/jpeg" ||
-        file.mimetype === "image/png" ||
-        file.mimetype == "image/jpg") {
+    if (file.mimetype == authEnum_1.Image.JPEG_TYPE ||
+        file.mimetype === authEnum_1.Image.PNG_TYPE ||
+        file.mimetype == authEnum_1.Image.JPG_TYPE) {
         cb(null, true);
     }
     else {
@@ -39,6 +39,6 @@ const upload = (0, multer_1.default)({
 });
 exports.upload = upload;
 router.get(authEnum_1.Routes.BLOG, blog_1.default.getBlog);
-router.post(authEnum_1.Routes.POST_BLOG, upload.single("BlogImage"), blog_1.default.postBlog);
+router.post(authEnum_1.Routes.POST_BLOG, upload.single(authEnum_1.Image.IMAGE_NAME), blog_1.default.postBlog);
 router.get(authEnum_1.Routes.GET_BLOG, blog_1.default.getBlogById);
 router.put(authEnum_1.Routes.EDIT_BLOG, blog_1.default.editBlog);

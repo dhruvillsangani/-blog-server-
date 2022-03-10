@@ -1,12 +1,12 @@
 import { User } from "../models/postgres";
 import { validationResult } from "express-validator";
 import { auth } from "../ENUM/authEnum";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { login, signup } from "../services/authService";
 import { logger } from "../config/logger_config";
 
 const authController = {
-  signup: async (req: Request, res: Response, next: any) => {
+  signup: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -27,12 +27,14 @@ const authController = {
   login: async (
     req: { body: { email: string; username: string; password: string } },
     res: Response,
-    next: any
+    next: NextFunction
   ) => {
     try {
-      const email = req.body.email;
-      const username = req.body.username;
-      const password = req.body.password;
+      // const email = req.body.email;
+      // const username = req.body.username;
+      // const password = req.body.password;
+
+      const { email, username, password } = req.body;
 
       await login(req, res, email, username, password);
     } catch (error) {
@@ -40,7 +42,7 @@ const authController = {
     }
   },
 
-  getUser: async (req: Request, res: Response, next) => {
+  getUser: async (req: Request, res: Response) => {
     let id = req.params.userId;
     let user: any = await User.findByPk(id);
     logger.info(user.dataValues);

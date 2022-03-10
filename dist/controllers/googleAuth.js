@@ -26,7 +26,6 @@ const passport_1 = __importDefault(require("passport"));
 const dotenv = __importStar(require("dotenv"));
 const passport_google_oauth2_1 = require("passport-google-oauth2");
 dotenv.config();
-const logger_config_1 = require("../config/logger_config");
 passport_1.default.use(new passport_google_oauth2_1.Strategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -34,9 +33,9 @@ passport_1.default.use(new passport_google_oauth2_1.Strategy({
     passReqToCallback: true,
 }, function (request, accessToken, refreshToken, profile, done) {
     // Here we are storing login info in database
-    logger_config_1.logger.info(accessToken);
-    logger_config_1.logger.info(refreshToken);
-    logger_config_1.logger.info(profile);
+    // logger.info(accessToken);
+    // logger.info(refreshToken);
+    // logger.info(profile);
     return done(null, profile);
 }));
 passport_1.default.serializeUser(function (user, done) {

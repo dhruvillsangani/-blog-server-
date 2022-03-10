@@ -2,17 +2,17 @@ import { User, user_password as userpass } from "../models/postgres";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { auth, status } from "../ENUM/authEnum";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { logger } from "../config/logger_config";
 
 export let login = async (
   req: { body: { email: string; username: string; password: string } },
   res: Response,
-  email: any,
-  username: any,
-  password: any
+  email: string,
+  username: string,
+  password: string
 ) => {
-  var pass: any;
+  var pass: string;
   var userObj: any;
 
   if (email) {
@@ -121,7 +121,7 @@ export let login = async (
           userId: userObj.id.toString(),
         },
         auth.JWT_SECRET_MSG,
-        { expiresIn: "1h" }
+        { expiresIn: auth.EXPIRATION_TIME }
       );
       res.status(status.success).json({
         token: token,
@@ -140,7 +140,7 @@ export let login = async (
     });
 };
 
-export let signup = async (req: Request, res: Response, next: any) => {
+export let signup = async (req: Request, res: Response, next: NextFunction) => {
   const { email, username, firstname, lastname, password } = req.body;
   try {
     const hashedPw = await bcrypt.hash(password, 12);

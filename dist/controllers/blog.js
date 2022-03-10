@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const blog_1 = __importDefault(require("../models/mongodb/blog"));
 const authEnum_1 = require("../ENUM/authEnum");
+const logger_config_1 = require("../config/logger_config");
 const blogController = {
     getBlog: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         let blog = yield blog_1.default.find();
@@ -56,9 +57,9 @@ const blogController = {
         const tags = req.body.tags;
         blog_1.default.findById(blogId)
             .then((result) => {
-            console.log(result);
+            logger_config_1.logger.info(result);
             if (!result) {
-                console.log("not found");
+                logger_config_1.logger.info("Not found");
             }
             result.title = title;
             result.description = description;

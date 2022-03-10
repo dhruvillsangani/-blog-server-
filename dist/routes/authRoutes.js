@@ -17,34 +17,41 @@ const auth_1 = __importDefault(require("../controllers/auth"));
 const express_validator_1 = require("express-validator");
 const postgres_1 = require("../models/postgres");
 const authEnum_1 = require("../ENUM/authEnum");
+const authEnum_2 = require("../ENUM/authEnum");
 const router = express_1.default.Router();
 router.post(authEnum_1.Routes.SIGNUP, [
-    (0, express_validator_1.body)("email")
+    (0, express_validator_1.body)(authEnum_2.Validation.email)
         .isEmail()
-        .withMessage("Please enter a valid email.")
-        .custom((value, { req }) => __awaiter(void 0, void 0, void 0, function* () {
+        .withMessage(authEnum_2.Validation.EMAIL_NOT_VALID)
+        .custom((value) => __awaiter(void 0, void 0, void 0, function* () {
         const userDoc = yield postgres_1.User.findAll({
             where: { email: value },
         });
         console.log(userDoc);
         if (userDoc.length != 0) {
-            return Promise.reject("E-Mail address already exists!");
+            return Promise.reject(authEnum_2.Validation.EMAIL_ALREADY_EXISTS);
         }
     }))
         .normalizeEmail(),
-    (0, express_validator_1.body)("password").trim().isLength({ min: 5 }),
-    (0, express_validator_1.body)("username")
+    (0, express_validator_1.body)(authEnum_2.Validation.password)
+        .trim()
+        .isLength({ min: 5 })
+        .notEmpty()
+        .withMessage(authEnum_2.Validation.PASSWORD_IS_EMPTY),
+    (0, express_validator_1.body)(authEnum_2.Validation.username)
         .trim()
         .not()
         .isEmpty()
-        .custom((value, { req }) => __awaiter(void 0, void 0, void 0, function* () {
+        .custom((value) => __awaiter(void 0, void 0, void 0, function* () {
         const userName = yield postgres_1.User.findAll({
             where: { username: value },
         });
         if (userName.length != 0) {
-            return Promise.reject("Username already exists!");
+            return Promise.reject(authEnum_2.Validation.USERNAME_ALREADY_EXISTS);
         }
-    })),
+    }))
+        .matches(/^[a-z_]{1}[a-zA-Z]*$/)
+        .withMessage(authEnum_2.Validation.USERNAME_CREDENTIALS),
 ], auth_1.default.signup);
 router.post(authEnum_1.Routes.LOGIN, auth_1.default.login);
 router.get(authEnum_1.Routes.GET_USER, auth_1.default.getUser);

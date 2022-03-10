@@ -35,16 +35,17 @@ const authController = {
     // TODO: give the facility to login with username and username should be unique.
     login: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const email = req.body.email;
-            const username = req.body.username;
-            const password = req.body.password;
+            // const email = req.body.email;
+            // const username = req.body.username;
+            // const password = req.body.password;
+            const { email, username, password } = req.body;
             yield (0, authService_1.login)(req, res, email, username, password);
         }
         catch (error) {
             res.status(401).json({ error: error });
         }
     }),
-    getUser: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    getUser: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         let id = req.params.userId;
         let user = yield postgres_1.User.findByPk(id);
         logger_config_1.logger.info(user.dataValues);

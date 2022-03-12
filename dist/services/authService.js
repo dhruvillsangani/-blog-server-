@@ -16,7 +16,7 @@ exports.signup = exports.login = void 0;
 const postgres_1 = require("../models/postgres");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const authEnum_1 = require("../ENUM/authEnum");
+const authEnum_1 = require("../utils/constants/enum/authEnum");
 const logger_config_1 = require("../config/logger_config");
 let login = (req, res, email, username, password) => __awaiter(void 0, void 0, void 0, function* () {
     var pass;
@@ -28,7 +28,7 @@ let login = (req, res, email, username, password) => __awaiter(void 0, void 0, v
         if (!userEmail) {
             const error = new Error();
             error.message = authEnum_1.auth.EMAIL_NOT_FOUND;
-            error.statusCode = authEnum_1.status.status_code;
+            error.statusCode = authEnum_1.status.VALIDATION_ERROR;
             logger_config_1.logger.error(error);
             throw error;
         }
@@ -44,7 +44,7 @@ let login = (req, res, email, username, password) => __awaiter(void 0, void 0, v
         });
         if (!usernameLogin) {
             const error = new Error();
-            error.statusCode = authEnum_1.status.status_code;
+            error.statusCode = authEnum_1.status.VALIDATION_ERROR;
             error.message = authEnum_1.auth.USERNAME;
             logger_config_1.logger.error(error);
             throw error;
@@ -75,12 +75,12 @@ let login = (req, res, email, username, password) => __awaiter(void 0, void 0, v
             if (findUserInfo.blockedAt) {
                 const error = new Error();
                 error.message = `you have to wait till ${userObj.blockedAt}`;
-                error.statusCode = authEnum_1.status.status_code;
+                error.statusCode = authEnum_1.status.VALIDATION_ERROR;
                 throw error;
             }
             const error = new Error();
             error.message = authEnum_1.auth.WRONG_PASSWORD;
-            error.statusCode = authEnum_1.status.status_code;
+            error.statusCode = authEnum_1.status.VALIDATION_ERROR;
             throw error;
         }
         if (isEqual) {
@@ -98,7 +98,7 @@ let login = (req, res, email, username, password) => __awaiter(void 0, void 0, v
                 if (findCounterStatus.counter != 0) {
                     const error = new Error();
                     error.message = `you have to wait till ${findBlockedStatus.blockedAt.toLocaleTimeString()}`;
-                    error.statusCode = authEnum_1.status.status_code;
+                    error.statusCode = authEnum_1.status.VALIDATION_ERROR;
                     throw error;
                 }
             }
@@ -135,7 +135,9 @@ let signup = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () 
             password: hashedPw,
         });
         const result = yield user.save();
-        res.status(201).json({ message: authEnum_1.auth.USER_CREATED, userId: result.id });
+        res
+            .status(authEnum_1.status.success)
+            .json({ message: authEnum_1.auth.USER_CREATED, userId: result.id });
     }
     catch (err) {
         if (!err.statusCode) {

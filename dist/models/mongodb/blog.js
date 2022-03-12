@@ -24,6 +24,22 @@ const blogSchema = new mongoose_2.Schema({
             required: true,
         },
     ],
+    author: {
+        type: String,
+        required: false,
+    },
+    comments: [
+        {
+            userName: {
+                type: String,
+                required: false,
+            },
+            comment: {
+                type: String,
+                required: false,
+            },
+        },
+    ],
 });
 const Blog = mongoose_1.default.model("Blog", blogSchema);
 exports.default = Blog;

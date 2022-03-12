@@ -30,7 +30,6 @@ dotenv.config();
 const newLocal = "0";
 const sequelize = new sequelize_1.Sequelize(process.env.DATABASE_NAME, process.env.USER_NAMES, process.env.DATABASE_PASS, {
     host: process.env.HOST,
-    // @ts-ignore
     dialect: process.env.DIALECT,
     operatorsAliases: newLocal,
 });

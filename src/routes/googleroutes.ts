@@ -1,6 +1,6 @@
 import express from "express";
 import passport from "passport";
-import { Routes, googleAuth } from "../ENUM/authEnum";
+import { Routes, googleAuth } from "../utils/constants/enum/authEnum";
 import session from "express-session";
 import "../controllers/googleAuth";
 import { logger } from "../config/logger_config";

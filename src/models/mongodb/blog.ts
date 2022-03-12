@@ -6,6 +6,13 @@ interface blog {
   description: string;
   imageUrl: string;
   tags: Types.Array<string>;
+  comments: [
+    {
+      userName: string;
+      comment: string;
+    }
+  ];
+  author: string;
 }
 
 const blogSchema = new Schema<blog>({
@@ -21,10 +28,27 @@ const blogSchema = new Schema<blog>({
     type: String,
     required: true,
   },
+
   tags: [
     {
       type: String,
       required: true,
+    },
+  ],
+  author: {
+    type: String,
+    required: false,
+  },
+  comments: [
+    {
+      userName: {
+        type: String,
+        required: false,
+      },
+      comment: {
+        type: String,
+        required: false,
+      },
     },
   ],
 });

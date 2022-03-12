@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const passport_1 = __importDefault(require("passport"));
-const authEnum_1 = require("../ENUM/authEnum");
+const authEnum_1 = require("../utils/constants/enum/authEnum");
 require("../controllers/googleAuth");
 const logger_config_1 = require("../config/logger_config");
 const router = express_1.default.Router();

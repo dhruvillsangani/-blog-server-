@@ -11,6 +11,10 @@ export enum auth {
 export enum blog {
   POST_UPDATED = "Post updated!",
   UNDEFINED = "Undefined",
+  IMAGE_NOT_FOUND = "Image is empty",
+  NOTFOUND = "Not Found",
+  IMAGE_DELETED_SUCCESSFULLY = "Deleted Successfully",
+  BLOG_NOT_FOUND = "The blog you are trying to delete is not found!",
 }
 
 export enum Routes {
@@ -24,6 +28,7 @@ export enum Routes {
   GOOGLE = "/google",
   GOOGLE_CALLBACK = "/google/callback",
   SUCESS = "/sucess",
+  DELETE_BLOG = "/delete/blog/:blogId",
 }
 
 export enum googleAuth {
@@ -34,7 +39,7 @@ export enum googleAuth {
 }
 
 export enum status {
-  status_code = 401,
+  VALIDATION_ERROR = 401,
   success = 200,
   serverError = 500,
 }
@@ -56,4 +61,5 @@ export enum Image {
   PNG_TYPE = "image/jpg",
   IMAGE_NAME = "BlogImage",
 }
+
 // export default auth;

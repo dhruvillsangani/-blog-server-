@@ -1,6 +1,6 @@
 import { User } from "../models/postgres";
 import { validationResult } from "express-validator";
-import { auth } from "../ENUM/authEnum";
+import { auth, status } from "../utils/constants/enum/authEnum";
 import { NextFunction, Request, Response } from "express";
 import { login, signup } from "../services/authService";
 import { logger } from "../config/logger_config";
@@ -11,15 +11,15 @@ const authController = {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         const error: any = new Error(auth.Validation_FAILED);
-        error.statusCode = 422;
+        error.statusCode = status.VALIDATION_ERROR;
         error.data = errors.array();
-        res.status(401).json({ error: error });
+        res.status(status.VALIDATION_ERROR).json({ error: error });
         throw error;
       }
       signup(req, res, next);
     } catch (e) {
       logger.error(e);
-      res.status(501).json({ error: e });
+      res.status(status.serverError).json({ error: e });
     }
   },
 
@@ -38,15 +38,15 @@ const authController = {
 
       await login(req, res, email, username, password);
     } catch (error) {
-      res.status(401).json({ error: error });
+      res.status(status.VALIDATION_ERROR).json({ error: error });
     }
   },
 
   getUser: async (req: Request, res: Response) => {
-    let id = req.params.userId;
-    let user: any = await User.findByPk(id);
-    logger.info(user.dataValues);
-    res.status(200).json({ user: user.dataValues });
+    const id = req.params.userId;
+    const user = await User.findByPk(id);
+    logger.info(user);
+    res.status(status.success).json(user);
   },
 };
 

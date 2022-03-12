@@ -2,8 +2,8 @@ import express from "express";
 import authController from "../controllers/auth";
 import { body } from "express-validator";
 import { User } from "../models/postgres";
-import { Routes } from "../ENUM/authEnum";
-import { Validation } from "../ENUM/authEnum";
+import { Routes } from "../utils/constants/enum/authEnum";
+import { Validation } from "../utils/constants/enum/authEnum";
 const router = express.Router();
 
 router.post(

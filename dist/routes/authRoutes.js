@@ -16,8 +16,8 @@ const express_1 = __importDefault(require("express"));
 const auth_1 = __importDefault(require("../controllers/auth"));
 const express_validator_1 = require("express-validator");
 const postgres_1 = require("../models/postgres");
-const authEnum_1 = require("../ENUM/authEnum");
-const authEnum_2 = require("../ENUM/authEnum");
+const authEnum_1 = require("../utils/constants/enum/authEnum");
+const authEnum_2 = require("../utils/constants/enum/authEnum");
 const router = express_1.default.Router();
 router.post(authEnum_1.Routes.SIGNUP, [
     (0, express_validator_1.body)(authEnum_2.Validation.email)

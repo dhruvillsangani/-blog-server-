@@ -1,4 +1,4 @@
-import { Sequelize } from "sequelize";
+import { Dialect, Sequelize } from "sequelize";
 import * as dotenv from "dotenv";
 import { init as userInit, User } from "./user";
 import { userPassword, user_password } from "./password_checking";
@@ -11,8 +11,7 @@ const sequelize = new Sequelize(
   process.env.DATABASE_PASS,
   {
     host: process.env.HOST,
-    // @ts-ignore
-    dialect: process.env.DIALECT,
+    dialect: process.env.DIALECT as Dialect,
     operatorsAliases: newLocal,
   }
 );

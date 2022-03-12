@@ -6,22 +6,24 @@ import fs from "fs";
 import session from "express-session";
 import mongoose from "mongoose";
 import commonRoutes from "./routes/index";
-import mongoUrl from "./ENUM/MongoURl";
+import mongoUrl from "./utils/constants/enum/mongoURl";
 import google from "./routes/googleroutes";
 import { User, user_password } from "./models/postgres";
 import multer from "multer";
 import { logger } from "./config/logger_config";
-import { storage, fileFilter } from "./routes/blogRoutes";
+import { storage, fileFilter, multiFileStorage } from "./config/image_upload";
 import passport from "passport";
 import cookieSession from "express-session";
 var app = express();
 
 app.use("/uploads", express.static("uploads"));
+app.use("/files", express.static("files"));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(commonRoutes);
 app.use(multer({ storage: storage, fileFilter: fileFilter }).single("image"));
+app.use(multer({ storage: multiFileStorage }).array("multi", 5));
 // set up session cookies
 app.use(
   cookieSession({

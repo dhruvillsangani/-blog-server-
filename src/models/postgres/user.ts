@@ -10,7 +10,7 @@ export class User extends Model {
   public counter: number;
   public updatedAt?: any;
   public blocked: boolean;
-  public blockedAt?: any;
+  public blockedAt?: Date;
 }
 
 export const init = (sequelize: Sequelize) => {

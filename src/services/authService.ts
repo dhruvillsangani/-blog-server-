@@ -1,7 +1,7 @@
 import { User, user_password as userpass } from "../models/postgres";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { auth, status } from "../ENUM/authEnum";
+import { auth, status } from "../utils/constants/enum/authEnum";
 import { NextFunction, Request, Response } from "express";
 import { logger } from "../config/logger_config";
 
@@ -22,7 +22,7 @@ export let login = async (
     if (!userEmail) {
       const error: any = new Error();
       error.message = auth.EMAIL_NOT_FOUND;
-      error.statusCode = status.status_code;
+      error.statusCode = status.VALIDATION_ERROR;
       logger.error(error);
       throw error;
     }
@@ -38,7 +38,7 @@ export let login = async (
     });
     if (!usernameLogin) {
       const error: any = new Error();
-      error.statusCode = status.status_code;
+      error.statusCode = status.VALIDATION_ERROR;
       error.message = auth.USERNAME;
       logger.error(error);
       throw error;
@@ -79,13 +79,13 @@ export let login = async (
         if (findUserInfo.blockedAt) {
           const error: any = new Error();
           error.message = `you have to wait till ${userObj.blockedAt}`;
-          error.statusCode = status.status_code;
+          error.statusCode = status.VALIDATION_ERROR;
           throw error;
         }
 
         const error: any = new Error();
         error.message = auth.WRONG_PASSWORD;
-        error.statusCode = status.status_code;
+        error.statusCode = status.VALIDATION_ERROR;
         throw error;
       }
 
@@ -109,7 +109,7 @@ export let login = async (
           if (findCounterStatus.counter != 0) {
             const error: any = new Error();
             error.message = `you have to wait till ${findBlockedStatus.blockedAt.toLocaleTimeString()}`;
-            error.statusCode = status.status_code;
+            error.statusCode = status.VALIDATION_ERROR;
             throw error;
           }
         }
@@ -154,7 +154,9 @@ export let signup = async (req: Request, res: Response, next: NextFunction) => {
     });
     const result = await user.save();
 
-    res.status(201).json({ message: auth.USER_CREATED, userId: result.id });
+    res
+      .status(status.success)
+      .json({ message: auth.USER_CREATED, userId: result.id });
   } catch (err: any) {
     if (!err.statusCode) {
       err.statusCode = status.serverError;

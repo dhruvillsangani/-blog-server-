@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const postgres_1 = require("../models/postgres");
 const express_validator_1 = require("express-validator");
-const authEnum_1 = require("../ENUM/authEnum");
+const authEnum_1 = require("../utils/constants/enum/authEnum");
 const authService_1 = require("../services/authService");
 const logger_config_1 = require("../config/logger_config");
 const authController = {
@@ -20,16 +20,16 @@ const authController = {
             const errors = (0, express_validator_1.validationResult)(req);
             if (!errors.isEmpty()) {
                 const error = new Error(authEnum_1.auth.Validation_FAILED);
-                error.statusCode = 422;
+                error.statusCode = authEnum_1.status.VALIDATION_ERROR;
                 error.data = errors.array();
-                res.status(401).json({ error: error });
+                res.status(authEnum_1.status.VALIDATION_ERROR).json({ error: error });
                 throw error;
             }
             (0, authService_1.signup)(req, res, next);
         }
         catch (e) {
             logger_config_1.logger.error(e);
-            res.status(501).json({ error: e });
+            res.status(authEnum_1.status.serverError).json({ error: e });
         }
     }),
     // TODO: give the facility to login with username and username should be unique.
@@ -42,14 +42,14 @@ const authController = {
             yield (0, authService_1.login)(req, res, email, username, password);
         }
         catch (error) {
-            res.status(401).json({ error: error });
+            res.status(authEnum_1.status.VALIDATION_ERROR).json({ error: error });
         }
     }),
     getUser: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        let id = req.params.userId;
-        let user = yield postgres_1.User.findByPk(id);
-        logger_config_1.logger.info(user.dataValues);
-        res.status(200).json({ user: user.dataValues });
+        const id = req.params.userId;
+        const user = yield postgres_1.User.findByPk(id);
+        logger_config_1.logger.info(user);
+        res.status(authEnum_1.status.success).json(user);
     }),
 };
 exports.default = authController;

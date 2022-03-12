@@ -16,6 +16,10 @@ var blog;
 (function (blog) {
     blog["POST_UPDATED"] = "Post updated!";
     blog["UNDEFINED"] = "Undefined";
+    blog["IMAGE_NOT_FOUND"] = "Image is empty";
+    blog["NOTFOUND"] = "Not Found";
+    blog["IMAGE_DELETED_SUCCESSFULLY"] = "Deleted Successfully";
+    blog["BLOG_NOT_FOUND"] = "The blog you are trying to delete is not found!";
 })(blog = exports.blog || (exports.blog = {}));
 var Routes;
 (function (Routes) {
@@ -29,6 +33,7 @@ var Routes;
     Routes["GOOGLE"] = "/google";
     Routes["GOOGLE_CALLBACK"] = "/google/callback";
     Routes["SUCESS"] = "/sucess";
+    Routes["DELETE_BLOG"] = "/delete/blog/:blogId";
 })(Routes = exports.Routes || (exports.Routes = {}));
 var googleAuth;
 (function (googleAuth) {
@@ -39,7 +44,7 @@ var googleAuth;
 })(googleAuth = exports.googleAuth || (exports.googleAuth = {}));
 var status;
 (function (status) {
-    status[status["status_code"] = 401] = "status_code";
+    status[status["VALIDATION_ERROR"] = 401] = "VALIDATION_ERROR";
     status[status["success"] = 200] = "success";
     status[status["serverError"] = 500] = "serverError";
 })(status = exports.status || (exports.status = {}));

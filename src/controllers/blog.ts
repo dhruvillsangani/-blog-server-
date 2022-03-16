@@ -1,10 +1,12 @@
 import Blog from "../models/mongodb/blog";
 import { NextFunction, Request, Response } from "express";
 import { blog, status } from "../utils/constants/enum/authEnum";
-import multer from "multer";
 import { logger } from "../config/logger_config";
 import { deleteFile } from "../config/file";
-import { Logger, ObjectId } from "mongodb";
+import PDFDocument from "pdfkit";
+import path from "path";
+import fs from "fs";
+import { io } from "../app";
 
 const blogController = {
   getBlog: async (req: Request, res: Response, next: NextFunction) => {
@@ -24,6 +26,7 @@ const blogController = {
       .save()
       .then((result: any) => {
         console.log(result);
+        io.emit("blogs", { action: "create", blog: result });
         res.json({ blog: result });
       })
       .catch((err: any) => console.log(err));
@@ -141,13 +144,40 @@ const blogController = {
         comments: comments,
       },
     });
-
-    // const updateComments = await Blog.updateOne(
-
-    // );
     logger.info(updateComments);
-
     res.json(updateComments);
+  },
+
+  blogToPdf: async (req: Request, res: Response, next: NextFunction) => {
+    const blogId = req.params.blogId;
+    const blog = await Blog.findById(blogId);
+    const invoiceName = "blog-" + blogId + ".pdf";
+    const invoicePath = path.join("blogpdf", invoiceName);
+    const pdfDoc = new PDFDocument({ size: "A4" });
+    // res.setHeader("Content-Type", "application/pdf");
+    // res.setHeader(
+    //   "Content-Disposition",
+    //   'inline; filename="' + invoiceName + '"'
+    // );
+    pdfDoc.pipe(fs.createWriteStream(invoicePath));
+    pdfDoc.pipe(res);
+    pdfDoc.fontSize(26).text("Blog", {
+      underline: true,
+      width: 410,
+      align: "center",
+    });
+    pdfDoc.text("---------------------------------------------------");
+    pdfDoc.moveDown();
+    pdfDoc.fontSize(25).text(`${blog.title}`, { width: 410, align: "center" });
+    pdfDoc.moveDown(1);
+    pdfDoc.image(`${blog.imageUrl}`, {
+      fit: [250, 300],
+      align: "center",
+      valign: "center",
+    });
+    pdfDoc.moveDown(10);
+    pdfDoc.fontSize(25).text(`${blog.description} `);
+    pdfDoc.end();
   },
 };
 

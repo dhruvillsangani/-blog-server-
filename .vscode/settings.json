@@ -1,17 +1,30 @@
 {
     "cSpell.words": [
         "blockedtime",
+        "blogpdf",
         "CALLBACKURL",
         "commnet",
+        "Dbname",
         "firstname",
         "googleroutes",
+        "hstore",
+        "ioserver",
         "lastname",
+        "ldpbz",
+        "mongodbcredentials",
         "originalname",
+        "Palatino",
         "postblog",
         "resave",
+        "socketio",
         "somesupersecretsecret",
         "sucess",
         "userpass",
-        "userpassword"
-    ]
+        "userpassword",
+        "valign"
+    ],
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": false,
+    "editor.formatOnSaveMode": "file",
 }

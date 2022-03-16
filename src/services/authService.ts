@@ -1,4 +1,4 @@
-import { User, user_password as userpass } from "../models/postgres";
+import { User } from "../models/postgres";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { auth, status } from "../utils/constants/enum/authEnum";

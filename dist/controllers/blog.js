@@ -16,6 +16,10 @@ const blog_1 = __importDefault(require("../models/mongodb/blog"));
 const authEnum_1 = require("../utils/constants/enum/authEnum");
 const logger_config_1 = require("../config/logger_config");
 const file_1 = require("../config/file");
+const pdfkit_1 = __importDefault(require("pdfkit"));
+const path_1 = __importDefault(require("path"));
+const fs_1 = __importDefault(require("fs"));
+const app_1 = require("../app");
 const blogController = {
     getBlog: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         const blog = yield blog_1.default.find();
@@ -33,6 +37,7 @@ const blogController = {
             .save()
             .then((result) => {
             console.log(result);
+            app_1.io.emit("blogs", { action: "create", blog: result });
             res.json({ blog: result });
         })
             .catch((err) => console.log(err));
@@ -136,10 +141,39 @@ const blogController = {
                 comments: comments,
             },
         });
-        // const updateComments = await Blog.updateOne(
-        // );
         logger_config_1.logger.info(updateComments);
         res.json(updateComments);
+    }),
+    blogToPdf: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        const blogId = req.params.blogId;
+        const blog = yield blog_1.default.findById(blogId);
+        const invoiceName = "blog-" + blogId + ".pdf";
+        const invoicePath = path_1.default.join("blogpdf", invoiceName);
+        const pdfDoc = new pdfkit_1.default({ size: "A4" });
+        // res.setHeader("Content-Type", "application/pdf");
+        // res.setHeader(
+        //   "Content-Disposition",
+        //   'inline; filename="' + invoiceName + '"'
+        // );
+        pdfDoc.pipe(fs_1.default.createWriteStream(invoicePath));
+        pdfDoc.pipe(res);
+        pdfDoc.fontSize(26).text("Blog", {
+            underline: true,
+            width: 410,
+            align: "center",
+        });
+        pdfDoc.text("---------------------------------------------------");
+        pdfDoc.moveDown();
+        pdfDoc.fontSize(25).text(`${blog.title}`, { width: 410, align: "center" });
+        pdfDoc.moveDown(1);
+        pdfDoc.image(`${blog.imageUrl}`, {
+            fit: [250, 300],
+            align: "center",
+            valign: "center",
+        });
+        pdfDoc.moveDown(10);
+        pdfDoc.fontSize(25).text(`${blog.description} `);
+        pdfDoc.end();
     }),
 };
 exports.default = blogController;

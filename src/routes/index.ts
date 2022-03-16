@@ -1,7 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import { router as blogData } from "../routes/blogRoutes";
 import auth from "../routes/authRoutes";
-import multer from "multer";
 var app = express();
 
 app.use((req: Request, res: Response, next: NextFunction) => {

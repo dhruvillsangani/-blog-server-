@@ -1,19 +1,17 @@
-// TODO: change to import instead of require
-// create index.ts inside routes folder and put all the routes from app.ts to that folder
 import express from "express";
 import bodyParser from "body-parser";
-import fs from "fs";
-import session from "express-session";
-import mongoose from "mongoose";
 import commonRoutes from "./routes/index";
-import mongoUrl from "./utils/constants/enum/mongoURl";
+import { fetchMongoCredentials } from "./utils/constants/enum/mongoURl";
 import google from "./routes/googleroutes";
-import { User, user_password } from "./models/postgres";
+import { User, mongo_credentials } from "./models/postgres";
 import multer from "multer";
 import { logger } from "./config/logger_config";
 import { storage, fileFilter, multiFileStorage } from "./config/image_upload";
 import passport from "passport";
 import cookieSession from "express-session";
+import { createServer } from "http";
+import { Server } from "socket.io";
+
 var app = express();
 
 app.use("/uploads", express.static("uploads"));
@@ -36,7 +34,32 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(google);
 
-mongoose.connect(mongoUrl.MONGO_URL).then(() => {
-  logger.info(mongoUrl.connected);
-  app.listen(5000);
+fetchMongoCredentials().then(() => {
+  logger.info("mongo_db connected");
+});
+
+// io.on("connection", (socket) => {
+//   console.log("a user connected");
+//   socket.on("disconnect", () => {
+//     console.log("user disconnected");
+//   });
+// });
+
+// http.listen(5000, () => {
+//   console.log("listening on *:5000");
+// });
+
+const httpServer = createServer(app);
+export const io = new Server(httpServer, {
+  cors: {
+    origin: ["http://localhost:4200"],
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("a user connected");
+});
+
+httpServer.listen(5000, () => {
+  console.log("port 5000");
 });

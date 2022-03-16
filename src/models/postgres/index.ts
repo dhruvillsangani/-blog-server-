@@ -1,7 +1,7 @@
 import { Dialect, Sequelize } from "sequelize";
 import * as dotenv from "dotenv";
 import { init as userInit, User } from "./user";
-import { userPassword, user_password } from "./password_checking";
+import { mongo, mongo_credentials } from "./mongodbcredentials";
 dotenv.config();
 
 const newLocal: any = "0";
@@ -16,6 +16,6 @@ const sequelize = new Sequelize(
   }
 );
 userInit(sequelize);
-userPassword(sequelize);
+mongo(sequelize);
 
-export { sequelize, User, user_password };
+export { sequelize, User, mongo_credentials };

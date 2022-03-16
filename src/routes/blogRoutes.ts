@@ -32,4 +32,6 @@ router.post(Routes.DELETE_BLOG, blogController.deleteBlog);
 
 router.put("/comments/:blogId", blogController.postComments);
 
+router.get("/blogpdf/:blogId", blogController.blogToPdf);
+
 export { router, storage, upload, fileFilter, uploadStorage };

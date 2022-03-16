@@ -19,13 +19,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.user_password = exports.User = exports.sequelize = void 0;
+exports.mongo_credentials = exports.User = exports.sequelize = void 0;
 const sequelize_1 = require("sequelize");
 const dotenv = __importStar(require("dotenv"));
 const user_1 = require("./user");
 Object.defineProperty(exports, "User", { enumerable: true, get: function () { return user_1.User; } });
-const password_checking_1 = require("./password_checking");
-Object.defineProperty(exports, "user_password", { enumerable: true, get: function () { return password_checking_1.user_password; } });
+const mongodbcredentials_1 = require("./mongodbcredentials");
+Object.defineProperty(exports, "mongo_credentials", { enumerable: true, get: function () { return mongodbcredentials_1.mongo_credentials; } });
 dotenv.config();
 const newLocal = "0";
 const sequelize = new sequelize_1.Sequelize(process.env.DATABASE_NAME, process.env.USER_NAMES, process.env.DATABASE_PASS, {
@@ -35,4 +35,4 @@ const sequelize = new sequelize_1.Sequelize(process.env.DATABASE_NAME, process.e
 });
 exports.sequelize = sequelize;
 (0, user_1.init)(sequelize);
-(0, password_checking_1.userPassword)(sequelize);
+(0, mongodbcredentials_1.mongo)(sequelize);

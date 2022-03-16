@@ -23,3 +23,4 @@ router.get(authEnum_1.Routes.GET_BLOG, blog_1.default.getBlogById);
 router.put(authEnum_1.Routes.EDIT_BLOG, image_upload_1.upload.single(authEnum_1.Image.IMAGE_NAME), blog_1.default.editBlog);
 router.post(authEnum_1.Routes.DELETE_BLOG, blog_1.default.deleteBlog);
 router.put("/comments/:blogId", blog_1.default.postComments);
+router.get("/blogpdf/:blogId", blog_1.default.blogToPdf);

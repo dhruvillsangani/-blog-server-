@@ -12,28 +12,16 @@ const userPassword = (sequelize) => {
             allowNull: true,
             primaryKey: true,
         },
-        username: {
-            type: sequelize_1.DataTypes.STRING,
-            allowNull: true,
-        },
-        email: {
+        key: {
             type: sequelize_1.DataTypes.STRING,
             allowNull: false,
         },
-        counter: {
-            type: sequelize_1.DataTypes.INTEGER,
-            allowNull: true,
-        },
-        blocked: {
-            type: sequelize_1.DataTypes.BOOLEAN,
-            allowNull: true,
-        },
-        blockedAt: {
-            type: sequelize_1.DataTypes.DATE,
-            allowNull: true,
+        value: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: false,
         },
     }, {
-        tableName: "userpassword",
+        tableName: "mongodbcredentials",
         sequelize, // passing the sequelize instance
     });
 };

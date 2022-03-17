@@ -38,17 +38,6 @@ fetchMongoCredentials().then(() => {
   logger.info("mongo_db connected");
 });
 
-// io.on("connection", (socket) => {
-//   console.log("a user connected");
-//   socket.on("disconnect", () => {
-//     console.log("user disconnected");
-//   });
-// });
-
-// http.listen(5000, () => {
-//   console.log("listening on *:5000");
-// });
-
 const httpServer = createServer(app);
 export const io = new Server(httpServer, {
   cors: {

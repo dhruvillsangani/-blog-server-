@@ -42,8 +42,8 @@ app.use(googleroutes_1.default);
 //   });
 // });
 // http.listen(5000, () => {
-//   console.log("listening on *:5000");
-// });
+// console.log("listening on *:5000");
+// // });
 const httpServer = (0, http_1.createServer)(app);
 exports.io = new socket_io_1.Server(httpServer, {
     cors: {
